@@ -1,19 +1,38 @@
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
+const shipFactory = require('./ship').shipFactory;
 
 class Player extends ObjectClass {
+
+  /**
+   * Creates an instance of Player.
+   */
   constructor(id, username, x, y) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
+
+    // What'd you think this is?
     this.username = username;
+
+    // Again, I ask: what do you think this variable is?
     this.hp = Constants.PLAYER_MAX_HP;
-    this.fireCooldown = 0;
+    
+    // Yeah...
     this.score = 0;
+
+    // Time left until the player can pew pew their cannons again
+    this.fireCooldown = 0;
+
+    // Default ship
+    this.ship = shipFactory.defaultShip()
+
+    // The gold monies
+    this.gold = 100
   }
 
-  // Returns a newly created bullet, or null.
   update(dt) {
-    super.update(dt); // updates direction and position
+    // Update position
+    super.update(dt);
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
@@ -22,33 +41,57 @@ class Player extends ObjectClass {
     this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
     this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
 
-    // Fire a bullet, if needed
+    // Decrease player's cooldowns
     this.fireCooldown -= dt;
-    if (this.fireCooldown <= 0) {
-      this.fireCooldown += Constants.PLAYER_FIRE_COOLDOWN;
-      return new Bullet(this.id, this.x, this.y, this.direction);
-    }
-
-    return null;
   }
 
   /**
    * Calculate the player's new steer angle. This will depend on which keys the
    * player pressed, the steering speed of their ship, and whatever else idk.
-   * 
-   * @memberof Player
    */
-  steer(keysPressed) {
-    let tempDir = this.direction
-    const TURN_L_KEY = 0
-    const TURN_R_KEY = 1
-    // update the player's direction based on their current direction and kep presses
-    const STEERING_SPEED = 0.05
-    const keyPresses = [ (keysPressed.a ? 1 : 0) , (keysPressed.d ? 1 : 0) ]
-    tempDir -= keyPresses[ TURN_L_KEY ] * STEERING_SPEED // turns left
-    tempDir += keyPresses[ TURN_R_KEY ] * STEERING_SPEED // turns right 
-    
-    this.setDirection(tempDir);
+  steer(directions) {
+    // directions : [turn left, turn right]
+    let tempDirection = this.direction + (-directions[ 0 ] + directions[ 1 ]) * this.ship.steeringSpeed
+    if (tempDirection > Math.PI) {
+      tempDirection = -1 * Math.PI + (tempDirection - Math.PI)
+    }
+    if ( tempDirection < -1 * Math.PI) {
+      tempDirection = Math.PI + (tempDirection + Math.PI)
+    }
+    this.direction = tempDirection
+    console.log(this.direction)
+  }
+
+  shootCannons(dir) {
+    if (this.fireCooldown <= 0) {
+
+      // are we firing left or right cannons? rn who cares unit circle hard
+      // if (blahblahblah) {}
+      this.fireCooldown += 1.0
+
+      const numCannons = this.ship.cannons[0]
+
+      let tempDirection = this.direction + Math.PI/2
+      if (tempDirection > Math.PI) {
+        tempDirection = -1 * Math.PI + (tempDirection - Math.PI)
+      }
+      if ( tempDirection < -1 * Math.PI) {
+        tempDirection = Math.PI + (tempDirection + Math.PI)
+      }
+      // get x diff
+      const xDiff = Math.cos(tempDirection)
+      // get y diff
+      const yDiff = Math.sin(tempDirection)
+
+      // let offSet = this.ship.length 
+
+      const bullets = []
+      for (let i = 0; i < numCannons; i++) {
+        bullets.push(new Bullet(this.id, this.x + 25*i*xDiff, this.y+ 25*i*yDiff, dir))
+      }
+      return bullets
+    }
+    return []
   }
 
   takeBulletDamage() {

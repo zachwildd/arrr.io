@@ -37,3 +37,10 @@ export const play = username => {
 export const updateDirection = throttle(20, dir => {
   socket.emit(Constants.MSG_TYPES.INPUT, dir);
 });
+
+/**
+ * Shoot your cannons, pew
+ */
+export const shootCannons = throttle(20, data => {
+  socket.emit(Constants.MSG_TYPES.SHOOT, data);
+});

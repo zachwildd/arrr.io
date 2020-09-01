@@ -4,6 +4,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const socketio = require('socket.io');
 
 const Constants = require('../shared/constants');
+// const Events = require('../shared/events');
 const Game = require('./game');
 const webpackConfig = require('../../webpack.dev.js');
 
@@ -34,6 +35,7 @@ io.on('connection', socket => {
 
   socket.on(Constants.MSG_TYPES.JOIN_GAME, joinGame);
   socket.on(Constants.MSG_TYPES.INPUT, handleInput);
+  socket.on(Constants.MSG_TYPES.SHOOT, handleShootCannons);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -44,8 +46,12 @@ function joinGame(username) {
   game.addPlayer(this, username);
 }
 
-function handleInput(input) {
-  game.handleInput(this, input);
+function handleInput(steerControls) {
+  game.handleSteer(this, steerControls);
+}
+
+function handleShootCannons(dir) {
+  game.handleShootCannons(this, dir);
 }
 
 function onDisconnect() {

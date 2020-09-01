@@ -73,11 +73,11 @@ function renderPlayer(me, player) {
   context.translate(canvasX, canvasY);
   context.rotate(direction);
   context.drawImage(
-    getAsset('ship.svg'),
-    -PLAYER_RADIUS,
-    -PLAYER_RADIUS,
-    PLAYER_RADIUS * 2,
-    PLAYER_RADIUS * 2,
+    getAsset('ship.png'),
+    -38,
+    -55,
+    76,
+    110,
   );
   context.restore();
 
@@ -85,7 +85,7 @@ function renderPlayer(me, player) {
   context.fillStyle = 'white';
   context.fillRect(
     canvasX - PLAYER_RADIUS,
-    canvasY + PLAYER_RADIUS + 8,
+    canvasY + 55,
     PLAYER_RADIUS * 2,
     2,
   );
@@ -104,8 +104,8 @@ function renderBullet(me, bullet) {
     getAsset('bullet.svg'),
     canvas.width / 2 + x - me.x - BULLET_RADIUS,
     canvas.height / 2 + y - me.y - BULLET_RADIUS,
-    BULLET_RADIUS * 2,
-    BULLET_RADIUS * 2,
+    BULLET_RADIUS * 5,
+    BULLET_RADIUS * 5,
   );
 }
 
