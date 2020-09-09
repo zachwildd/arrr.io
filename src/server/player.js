@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
-const shipFactory = require('./ship').shipFactory;
+const { shipFactory } = require('./ship');
+const Shape = require('./Shape');
 
 class Player extends ObjectClass {
-
   /**
    * Creates an instance of Player.
    */
@@ -16,7 +17,7 @@ class Player extends ObjectClass {
 
     // Again, I ask: what do you think this variable is?
     this.hp = Constants.PLAYER_MAX_HP;
-    
+
     // Yeah...
     this.score = 0;
 
@@ -24,10 +25,18 @@ class Player extends ObjectClass {
     this.fireCooldown = 0;
 
     // Default ship
-    this.ship = shipFactory.defaultShip()
+    this.ship = shipFactory.defaultShip();
 
     // The gold monies
-    this.gold = 100
+    this.gold = 100;
+
+
+    // need to get the length and width from the ship, but for now we do this shit
+    // const width = 20;
+    // const height = 20;
+    // this.box = new Shape([[-1 * width / 2, -1 * height / 2], [width / 2, -1 * height / 2], [-1 * width / 2, height / 2], [width / 2, width / 2]], x, y);
+    // this.box = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
+    this.box = new Shape([[0, 0], [0, 20], [20, 20], [20, 0]], x, y);
   }
 
   update(dt) {
@@ -51,47 +60,46 @@ class Player extends ObjectClass {
    */
   steer(directions) {
     // directions : [turn left, turn right]
-    let tempDirection = this.direction + (-directions[ 0 ] + directions[ 1 ]) * this.ship.steeringSpeed
+    let tempDirection = this.direction + (-directions[0] + directions[1]) * this.ship.steeringSpeed;
     if (tempDirection > Math.PI) {
-      tempDirection = -1 * Math.PI + (tempDirection - Math.PI)
+      tempDirection = -1 * Math.PI + (tempDirection - Math.PI);
     }
-    if ( tempDirection < -1 * Math.PI) {
-      tempDirection = Math.PI + (tempDirection + Math.PI)
+    if (tempDirection < -1 * Math.PI) {
+      tempDirection = Math.PI + (tempDirection + Math.PI);
     }
-    this.direction = tempDirection
-    console.log(this.direction)
+    this.direction = tempDirection;
+    console.log(this.direction);
   }
 
   shootCannons(dir) {
     if (this.fireCooldown <= 0) {
-
       // are we firing left or right cannons? rn who cares unit circle hard
       // if (blahblahblah) {}
-      this.fireCooldown += 1.0
+      this.fireCooldown += 1.0;
 
-      const numCannons = this.ship.cannons[0]
+      const numCannons = this.ship.cannons[0];
 
-      let tempDirection = this.direction + Math.PI/2
+      let tempDirection = this.direction + Math.PI / 2;
       if (tempDirection > Math.PI) {
-        tempDirection = -1 * Math.PI + (tempDirection - Math.PI)
+        tempDirection = -1 * Math.PI + (tempDirection - Math.PI);
       }
-      if ( tempDirection < -1 * Math.PI) {
-        tempDirection = Math.PI + (tempDirection + Math.PI)
+      if (tempDirection < -1 * Math.PI) {
+        tempDirection = Math.PI + (tempDirection + Math.PI);
       }
       // get x diff
-      const xDiff = Math.cos(tempDirection)
+      const xDiff = Math.cos(tempDirection);
       // get y diff
-      const yDiff = Math.sin(tempDirection)
+      const yDiff = Math.sin(tempDirection);
 
-      // let offSet = this.ship.length 
+      // let offSet = this.ship.length
 
-      const bullets = []
+      const bullets = [];
       for (let i = 0; i < numCannons; i++) {
-        bullets.push(new Bullet(this.id, this.x + 25*i*xDiff, this.y+ 25*i*yDiff, dir))
+        bullets.push(new Bullet(this.id, this.x + 25 * i * xDiff, this.y + 25 * i * yDiff, dir));
       }
-      return bullets
+      return bullets;
     }
-    return []
+    return [];
   }
 
   takeBulletDamage() {

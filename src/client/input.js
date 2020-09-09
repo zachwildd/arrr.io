@@ -49,7 +49,6 @@ export function startCapturingInput() {
   window.addEventListener('click', onMouseInput);
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
-
 }
 
 export function stopCapturingInput() {

@@ -1,11 +1,16 @@
 const shortid = require('shortid');
 const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
+const Shape = require('./Shape');
 
 class Bullet extends ObjectClass {
   constructor(parentID, x, y, dir) {
     super(shortid(), x, y, dir, Constants.BULLET_SPEED);
     this.parentID = parentID;
+
+    // need to get the length and width from the ship, but for now we do this shit
+    // this.box = new Shape([[0, 20], [0, 0], [20, 0], [20, 20]], x, y);
+    this.box = new Shape([[0, 0], [0, 20], [20, 20], [20, 0]], x, y);
   }
 
   // Returns true if the bullet should be destroyed
