@@ -34,9 +34,7 @@ class Player extends ObjectClass {
     // need to get the length and width from the ship, but for now we do this shit
     // const width = 20;
     // const height = 20;
-    // this.box = new Shape([[-1 * width / 2, -1 * height / 2], [width / 2, -1 * height / 2], [-1 * width / 2, height / 2], [width / 2, width / 2]], x, y);
-    // this.box = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
-    this.box = new Shape([[0, 0], [0, 20], [20, 20], [20, 0]], x, y);
+    this.box = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
   }
 
   update(dt) {
