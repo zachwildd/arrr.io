@@ -2,9 +2,6 @@ const Constants = require('../shared/constants');
 const Player = require('./player');
 const applyCollisions = require('./collisions');
 const Scene = require('./game/Scene');
-const Bullet = require('./bullet');
-
-const EVENTS = require('./events');
 
 class Game {
   constructor() {
@@ -14,7 +11,7 @@ class Game {
     this.scene = new Scene();
     this.lastUpdateTime = Date.now();
     this.shouldSendUpdate = false;
-    setInterval(this.update.bind(this), 1000 / 60); //
+    setInterval(this.update.bind(this), 1000 / 60);
   }
 
   addPlayer(socket, username) {

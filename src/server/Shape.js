@@ -8,70 +8,6 @@ function Shape(points, x, y, color, stroke) {
   this.getMedians();
 }
 
-Shape.prototype.draw = function (ctx) {
-  const p = this.points;
-
-  ctx.save();
-  ctx.fillStyle = this.color;
-  ctx.strokeStyle = this.stroke;
-  ctx.lineWidth = 3;
-  ctx.translate(this.x, this.y);
-  p.forEach((point, i) => {
-    if (i === 0) {
-      ctx.beginPath();
-      ctx.moveTo(point.x, point.y);
-    } else if (i === (p.length - 1)) {
-      ctx.lineTo(point.x, point.y);
-      ctx.lineTo(p[0].x, p[0].y);
-      ctx.stroke();
-      ctx.fill();
-    } else {
-      ctx.lineTo(point.x, point.y);
-    }
-  });
-  ctx.closePath();
-  ctx.restore();
-};
-
-Shape.prototype.drawNormals = function (ctx) {
-  const m = this.medians;
-  const n = this.normals;
-  const size = 15;
-  let med;
-
-  ctx.save();
-
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = '#003300';
-  ctx.fillStyle = 'green';
-
-  ctx.translate(this.x, this.y);
-
-  m.forEach(point => {
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI, false);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  });
-
-  ctx.fillStyle = 'red';
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = '#003300';
-
-  n.forEach((point, i) => {
-    ctx.beginPath();
-    med = m[i % m.length];
-    ctx.moveTo(med.x, med.y);
-    ctx.lineTo(med.x + point.x * size, med.y + point.y * size);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  });
-
-  ctx.restore();
-};
-
 Shape.prototype.getNormals = function () {
   const p = this.points;
   const n = p.length;
@@ -102,11 +38,6 @@ Shape.prototype.getMedians = function () {
     nxt = p[i + 1] || p[0];
     this.medians.push({ x: (crt.x + nxt.x) / 2, y: (crt.y + nxt.y) / 2 });
   }
-};
-
-Shape.prototype.move = function (x, y) {
-  this.x = x;
-  this.y = y;
 };
 
 Shape.prototype.checkCollision = function (shape) {

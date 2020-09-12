@@ -3,37 +3,35 @@ const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 const { shipFactory } = require('./ship');
-const Shape = require('./Shape');
+const Shape = require('./shape');
 
 class Player extends ObjectClass {
   /**
    * Creates an instance of Player.
    */
   constructor(id, username, x, y) {
-    super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
+    super(
+      id,
+      x,
+      y,
+      0,
+      Constants.PLAYER_SPEED,
+    );
 
-    // What'd you think this is?
     this.username = username;
-
-    // Again, I ask: what do you think this variable is?
     this.hp = Constants.PLAYER_MAX_HP;
-
-    // Yeah...
     this.score = 0;
 
-    // Time left until the player can pew pew their cannons again
+    // Milliseconds left until the player can shoot their cannons again
     this.fireCooldown = 0;
 
-    // Default ship
+    // Give the player the default ship
     this.ship = shipFactory.defaultShip();
 
-    // The gold monies
+    // The amount of gold the player has
     this.gold = 100;
 
-
-    // need to get the length and width from the ship, but for now we do this shit
-    // const width = 20;
-    // const height = 20;
+    // Need to get the length and width from the ship, but for now we do this shit
     this.box = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
   }
 
@@ -69,6 +67,14 @@ class Player extends ObjectClass {
     console.log(this.direction);
   }
 
+  /**
+   * Attempt to shoot the player's ship's cannon in the direction they're mouse
+   * is pointing.
+   *
+   * @param {*} dir
+   * @returns
+   * @memberof Player
+   */
   shootCannons(dir) {
     if (this.fireCooldown <= 0) {
       // are we firing left or right cannons? rn who cares unit circle hard

@@ -1,7 +1,7 @@
 const shortid = require('shortid');
 const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
-const Shape = require('./Shape');
+const Shape = require('./shape');
 
 class Bullet extends ObjectClass {
   constructor(parentID, x, y, dir) {
