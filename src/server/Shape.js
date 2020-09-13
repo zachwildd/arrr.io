@@ -1,3 +1,10 @@
+/**
+ * Taken from: https://github.com/urgn/SAT-collisions
+ *
+ * This shape module allows us to create hitboxes and check for collisions between
+ * them via the Seperating Axis Theorem.
+ */
+
 function Shape(points, x, y, color, stroke) {
   this.x = x || 0;
   this.y = y || 0;
