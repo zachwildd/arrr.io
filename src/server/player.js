@@ -10,13 +10,8 @@ class Player extends ObjectClass {
    * Creates an instance of Player.
    */
   constructor(id, username, x, y) {
-    super(
-      id,
-      x,
-      y,
-      0,
-      Constants.PLAYER_SPEED,
-    );
+    const hitbox = new Shape([[0, 0], [76, 0], [76, 110], [0, 110]], x, y);
+    super(id, x, y, 0, Constants.PLAYER_SPEED, hitbox);
 
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -30,9 +25,6 @@ class Player extends ObjectClass {
 
     // The amount of gold the player has
     this.gold = 100;
-
-    // Need to get the length and width from the ship, but for now we do this shit
-    this.box = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
   }
 
   update(dt) {
@@ -45,9 +37,6 @@ class Player extends ObjectClass {
     // Make sure the player stays in bounds
     this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
     this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
-
-    this.box.x = this.x;
-    this.box.y = this.y;
 
     // Decrease player's cooldowns
     this.fireCooldown -= dt;

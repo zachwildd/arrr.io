@@ -9,7 +9,7 @@ function applyCollisions(players, bullets) {
       const player = players[j];
 
       // use the player and bullet's collision boxes to determine if there was a collision
-      if (bullet.parentID !== player.id && player.box.checkCollision(bullet.box)) {
+      if (bullet.parentID !== player.id && player.hitbox.checkCollision(bullet.hitbox)) {
         destroyedBullets.push(bullet);
         player.takeBulletDamage();
         break;
