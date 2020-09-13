@@ -1,3 +1,5 @@
+const Shape = require('./shape');
+
 class Ship {
   constructor(type, cannons, hull, steering, speed, cargo) {
     // this ship type, unique per ship
@@ -42,7 +44,7 @@ class Ship {
 class ShipFactory {
   defaultShip() {
     const type = 1;
-    const hitbox = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], x, y);
+    // const hitbox = new Shape([[0, 0], [20, 0], [20, 20], [0, 20]], 0, 0);
     const cannons = {
       sides: [2, 1],
       strength: 1,
